@@ -8,10 +8,13 @@ from lib2to3.pgen2.token import NEWLINE
 import math
 from operator import contains, truediv
 import sys
+from unicodedata import name
 
 #create a dictionary of names
 names = {}
 words = {}
+name_dict_path = ""
+word_dict_path = ""
 output_file_path = "default_output.txt"
 
 def load_names_to_ram(dictionary_path):
@@ -51,12 +54,6 @@ def check_word(subString):
         return False
 
 def extract_patterns_dict_compare(file):
-    print("Name dictionary path : ")
-    name_dict_path = input()
-    print("Word dictionary path : ")
-    word_dict_path = input()
-    load_words_to_ram(word_dict_path)
-    load_names_to_ram(name_dict_path)
     result = []
     with open(file) as f:
         for line in f:
@@ -89,11 +86,19 @@ def shannon_entropy(inputString):
 
 def args():
     # -i <input-file> -o <output-file>
-    if len(sys.argv) == 7:
+    if len(sys.argv) >= 7 and sys.argv[6]!="dictionary":
         input_file = sys.argv[2]
         output_file_path = sys.argv[4]
         mode = sys.argv[6]
         return input_file, output_file_path, mode
+    elif len(sys.argv) >= 7 and sys.argv[6]=="dictionary":
+        input_file = sys.argv[2]
+        output_file_path = sys.argv[4]
+        mode = sys.argv[6]
+        name_dict_path = sys.argv[7]
+        word_dict_path = sys.argv[8]
+        return input_file, output_file_path, mode, name_dict_path, word_dict_path
+
     else:
         print("Invalid arguments")
         print("Usage: python script.py -i <input-file> -o <output-file> -m <mode>")
@@ -135,20 +140,21 @@ def main():
         print("No arguments provided")
         print("Usage: python script.py -i <input-file> -o <output-file> -m <mode>")
         print("Modes : 'entropy' , 'dictionary'")
+        print("Usage: python script.py -i <input-file> -o <output-file> -m dictionary <name-dictionary> <word-dictionary>")
         sys.exit(1)
     else:
-        input_file, output_file_path, mode = args()
-        if mode == "entropy":
-            entropy_arr = analyse_through_shannon_entropy(input_file)
-            entropy_arr = sort_by_shannon_entropy(entropy_arr)
-            write_to_file(output_file_path, entropy_arr)
-        elif mode == "dictionary":
-            patterns = extract_patterns_dict_compare(input_file)
-            write_to_file(output_file_path, patterns)    
+        if args()[2] == "entropy":
+            write_to_file(args()[1], sort_by_shannon_entropy(analyse_through_shannon_entropy(args()[0])))
+        elif args()[2] == "dictionary":
+            load_names_to_ram(args()[3])
+            load_words_to_ram(args()[4])
+            write_to_file(args()[1], extract_patterns_dict_compare(args()[0]))
         else:
             print("Invalid mode")
+            print("Usage: python script.py -i <input-file> -o <output-file> -m <mode>")
+            print("Modes : 'entropy' , 'dictionary'")
+            print("Usage: python script.py -i <input-file> -o <output-file> -m dictionary <name-dictionary> <word-dictionary>")
             sys.exit(1)
-
 main()
 
 
