@@ -67,6 +67,8 @@ def extract_patterns_dict_compare(file):
                 buffer = ""
                 for i in range(len(passw)):
                     for j in range(len(passw)):
+                        if passw[i:j].strip() == "":
+                            continue
                         if check_name(passw[i:j]):
                             passw.replace(passw[i:j], "<name>")
                         if check_word(passw[i:j]):
