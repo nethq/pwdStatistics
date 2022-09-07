@@ -6,4 +6,4 @@ You can get a dictionary of all the english words. The script executes in 0.5 se
 
 >Usage: python script.py -i #input-file# -o #output-file# -m #mode#
 >>Modes : 'entropy' , 'dictionary'
->Usage: python script.py -i #input-file# -o #output-file# -m dictionary #name-dictionary# #word-dictionary#
+>>>Usage: python script.py -i #input-file# -o #output-file# -m dictionary #name-dictionary# #word-dictionary#
