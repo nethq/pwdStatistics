@@ -2,9 +2,11 @@
 # -*- coding: utf-8 -*-
 from curses.ascii import isalpha
 from dataclasses import replace
+from distutils.util import subst_vars
+from json import load
 from lib2to3.pgen2.token import NEWLINE
 import math
-from operator import contains
+from operator import contains, truediv
 import sys
 
 #create a dictionary of names
@@ -16,6 +18,7 @@ def load_names_to_ram(dictionary_path):
     f = open(dictionary_path)
     print("Loading names dictionary "+ dictionary_path+ " to ram")
     for line in f:
+        line = line.lower().strip()
         names[hash(line)]=line
     print("Dictionary loaded")
 
@@ -23,20 +26,29 @@ def load_words_to_ram(dictionary_path):
     f = open(dictionary_path)
     print("Loading dictionary "+ dictionary_path+ " to ram")
     for line in f:
+        line = line.lower().strip()
         words[hash(line)]=line
     print("Dictionary loaded")
 
 def check_name(subString):
-        if subString == names[hash(subString)]:
+    subString = str(subString).lower().strip()
+    if hash(subString) in names:
+        if names[hash(subString)]==subString:
             return True
-        else:
+        else: 
             return False
+    else:
+        return False
         
 def check_word(subString):
-        if subString == words[hash(subString)]:
+    subString = str(subString).lower().strip()
+    if hash(subString) in words:
+        if words[hash(subString)]==subString:
             return True
-        else:
+        else: 
             return False
+    else:
+        return False
 
 def extract_patterns_dict_compare(file):
     print("Name dictionary path : ")
@@ -59,19 +71,14 @@ def extract_patterns_dict_compare(file):
                 email = line.split(":")[0]
                 passw = line.split(":")[1]
                 buffer = ""
+                #start from complete string and remove one character at a time
                 for i in range(len(passw)):
-                    for j in range(len(passw)):
-                        if i == j:
-                            continue
-                        if i >j:
-                            continue
-                        if check_name(str(passw[i:j])):
-                            passw = passw.replace(str(passw[i:j]), "<name>")
-                            print(passw)
-                        if check_word(str(passw[i:j])):
-                            passw = passw.replace(str(passw[i:j]), "<word>")
-                            print(passw)
-                result.append(email + ":" + passw) 
+                    buffer = passw[:i] + passw[i+1:]
+                    if check_word(buffer):
+                        result.append("Word : " + buffer + " -> " + email + ":" + passw)
+                    if check_name(buffer):
+                        result.append("Name : " + buffer + " -> " + email + ":" + passw)
+
     return result
 
 def shannon_entropy(inputString):
@@ -142,11 +149,9 @@ def main():
             print("Invalid mode")
             sys.exit(1)
 
-    
-#main()
-print(hash("possible"))
-print(check_word("possible"))
-                    
+main()
+
+
                                     
 
             
