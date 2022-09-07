@@ -2,13 +2,9 @@
 # -*- coding: utf-8 -*-
 from curses.ascii import isalpha
 from dataclasses import replace
-from distutils.util import subst_vars
-from json import load
-from lib2to3.pgen2.token import NEWLINE
 import math
-from operator import contains, truediv
 import sys
-from unicodedata import name
+
 
 #create a dictionary of names
 names = {}
@@ -72,9 +68,9 @@ def extract_patterns_dict_compare(file):
                 for i in range(len(passw)):
                     buffer = passw[:i] + passw[i+1:]
                     if check_word(buffer):
-                        result.append("Word : " + buffer + " -> " + email + ":" + passw)
+                        result.append("Word | " + buffer + " -> " + email + ":" + passw)
                     if check_name(buffer):
-                        result.append("Name : " + buffer + " -> " + email + ":" + passw)
+                        result.append("Name | " + buffer + " -> " + email + ":" + passw)
 
     return result
 
