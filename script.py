@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from curses.ascii import isalpha
 from dataclasses import replace
+from lib2to3.pgen2.token import NEWLINE
 import math
 from operator import contains
 import sys
@@ -25,7 +27,7 @@ def load_words_to_ram(dictionary_path):
     print("Dictionary loaded")
 
 def check_name(subString):
-    try:        
+    try:
         if subString == names[hash(subString)]:
             return True
         else:
@@ -63,17 +65,13 @@ def extract_patterns_dict_compare(file):
                 email = line.split(":")[0]
                 passw = line.split(":")[1]
                 buffer = ""
-                for letter in passw:
-                    buffer += letter
-                    if check_word(buffer):
-                        passw = passw.replace(buffer,"<word>")
-                        buffer = ""
-                    if check_name(buffer):
-                        passw = passw.replace(buffer,"<name>")
-                        buffer = ""
-                result.append(email + ":" + passw)
-                
-             
+                for i in range(len(passw)):
+                    for j in range(len(passw)):
+                        if check_name(passw[i:j]):
+                            passw.replace(passw[i:j], "<name>")
+                        if check_word(passw[i:j]):
+                            passw.replace(passw[i:j], "<word>")
+                result.append(email + ":" + passw) 
     return result
 
 def shannon_entropy(inputString):
