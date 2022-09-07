@@ -27,22 +27,16 @@ def load_words_to_ram(dictionary_path):
     print("Dictionary loaded")
 
 def check_name(subString):
-    try:
         if subString == names[hash(subString)]:
             return True
         else:
             return False
-    except:
-        return False
         
 def check_word(subString):
-    try:        
         if subString == words[hash(subString)]:
             return True
         else:
             return False
-    except:
-        return False
 
 def extract_patterns_dict_compare(file):
     print("Name dictionary path : ")
@@ -67,12 +61,16 @@ def extract_patterns_dict_compare(file):
                 buffer = ""
                 for i in range(len(passw)):
                     for j in range(len(passw)):
-                        if passw[i:j].strip() == "":
+                        if i == j:
                             continue
-                        if check_name(passw[i:j]):
-                            passw.replace(passw[i:j], "<name>")
-                        if check_word(passw[i:j]):
-                            passw.replace(passw[i:j], "<word>")
+                        if i >j:
+                            continue
+                        if check_name(str(passw[i:j])):
+                            passw = passw.replace(str(passw[i:j]), "<name>")
+                            print(passw)
+                        if check_word(str(passw[i:j])):
+                            passw = passw.replace(str(passw[i:j]), "<word>")
+                            print(passw)
                 result.append(email + ":" + passw) 
     return result
 
@@ -145,9 +143,9 @@ def main():
             sys.exit(1)
 
     
-main()
-
-                    
+#main()
+print(hash("possible"))
+print(check_word("possible"))
                     
                                     
 
