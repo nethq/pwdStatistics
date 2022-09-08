@@ -124,12 +124,11 @@ def main():
             hashTable = dictionary_to_hashTable(path)
             for word in data:
                 for i in range(len(word)):
-                    if check_string(word[i:],hashTable) and len(word[i:]) >= limit:
-                        return_data.append("("+path+")-["+word[i:]+"]={"+word+"}\n")
-                        break
-                    elif check_string(word[:i],hashTable) and len(word[:i]) >= limit:
-                        return_data.append("("+path+")-["+word[:i]+"]={"+word+"}\n")
-                        break
+                    for j in range(i+limit, len(word)):
+                        if check_string(str(word[i:j]),hashTable):
+                            return_data.append("("+path+")-["+word[i:j]+"]={"+word+"}\n")
+                            break
+                            
     else:
         print("Invalid mode")
         sys.exit(1)
