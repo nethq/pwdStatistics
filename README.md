@@ -9,7 +9,8 @@ You can get a dictionary of all the english words. The script executes in 0.5 se
 >>>Usage: python script.py -i **input-file** -o **output-file** -m dictionary **name-dictionary** **word-dictionary**
 ----
 >-i **input-file** -o **output-file** -f **data-format** -m **mode** -d **dictionary-file1** **dictionary-file2** ...
->data-format : uses * as a wildcard
->mode : "entropy" , "dictionary"
->-d **dictionary-file1** **dictionary-file2** ... - would be used for dictionary mode"
+>>data-format : uses * as a wildcard
+>>>mode : "entropy" , "dictionary"
+>>-d **dictionary-file1** **dictionary-file2** ... - would be used for dictionary mode"
 >-l **number** - would be used to limit the lenght of the checked data"
+
