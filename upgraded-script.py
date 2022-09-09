@@ -1,9 +1,7 @@
 """Script is used to analyse the complexity , strength and entropy of passwords in a file."""
-from curses.ascii import isalpha
-from operator import truediv
 import sys
 import math
-from webbrowser import get
+
 data_format = ":*\n"
 input_file = ""
 output_file = ""
