@@ -50,7 +50,6 @@ def extract_patterns_dict_compare(file):
     result = []
     with open(file) as f:
         for line in f:
-            print("Progress : " + line )
             if line == "":
                 continue
             if ";" in line:
