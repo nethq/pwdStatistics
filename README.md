@@ -9,9 +9,20 @@ You can get a dictionary of all the english words. The script executes in 0.5 se
 >>>Usage: python script.py -i **input-file** -o **output-file** -m dictionary **name-dictionary** **word-dictionary**
 ----
 ***Concerning the upgraded script :***
->-i **input-file** -o **output-file** -f **data-format** -m **mode** -d **dictionary-file1** **dictionary-file2** ...
->>data-format : uses * as a wildcard
->>>mode : "entropy" , "dictionary"
->>-d **dictionary-file1** **dictionary-file2** ... - would be used for dictionary mode"
->-l **number** - would be used to limit the lenght of the checked data"
+>-i **input-file** -o **output-file** -f **data-format** -m **mode** -d **dictionary-file1** **dictionary-file2** ...*
+>>-i = input file ; -o = output file ; -f = data format ; -m = mode ; -d = dictionary file ; -l = limit ; -h = help*
+>>>mode : \"entropy\" , \"dict\", \"dr\"*
+>>>-m entropy : calculates and writes the entropy of the data conforming to the filter*
+>>>-m dict : checks the data for dictionary words*
+>>>-m dr : checks the data for dictionary words and replaces them with a specified string*
+>>>-f :*n -** would get all the data between : and n*
+>>>-d **dictionary-file1** **dictionary-file2** ... - would be used for dictionary mode*
+>>-l <number** - would be used to limit the lenght of the checked data*
+>-h : help*
+
+Example :*
+python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m entropy*
+python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dict -d dictionary1.txt dictionary2.txt*
+python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dr -d dictionary1.txt=~W~ dictionary2.txt=~W~
+            
 
