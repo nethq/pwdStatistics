@@ -61,7 +61,7 @@ def args():
             print("Example :")
             print("python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m entropy")
             print("python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dict -d dictionary1.txt dictionary2.txt")
-            print("python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dr -d dictionary1.txt=words dictionary2.txt=names")
+            print("python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dr -d dictionary1.txt=~W~ dictionary2.txt=~W~")
             sys.exit(0)
         if sys.argv[i] == "-i":
             input_file = sys.argv[i+1]
