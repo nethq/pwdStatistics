@@ -5,13 +5,10 @@ from dataclasses import replace
 import math
 import sys
 
-
-#create a dictionary of names
 names = {}
 words = {}
 name_dict_path = ""
 word_dict_path = ""
-output_file_path = "default_output.txt"
 
 def load_names_to_ram(dictionary_path):
     f = open(dictionary_path)
