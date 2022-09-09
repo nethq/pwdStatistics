@@ -26,6 +26,7 @@ def load_words_to_ram(dictionary_path):
         words[hash(line)]=line
     print("Dictionary loaded")
 
+
 def check_name(subString):
     subString = str(subString).lower().strip()
     if hash(subString) in names:
@@ -147,8 +148,10 @@ def main():
             print("Modes : 'entropy' , 'dictionary'")
             print("Usage: python script.py -i <input-file> -o <output-file> -m dictionary <name-dictionary> <word-dictionary>")
             sys.exit(1)
-main()
+#main()
 
+load_words_to_ram("words.txt")
+print(words)
 
                                     
 
