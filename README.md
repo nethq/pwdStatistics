@@ -15,7 +15,7 @@ You can get a dictionary of all the english words. The script executes in 0.5 se
 >-m entropy : calculates and writes the entropy of the data conforming to the filter  
 >-m dict : checks the data for dictionary words  
 >-m dr : checks the data for dictionary words and replaces them with a specified string  
->-f :*n -** would get all the data between : and n  
+>-f :*n ->would get all the data between : and n  
 >-d **dictionary-file1** **dictionary-file2** ... - would be used for dictionary mode  
 >-l <number** - would be used to limit the lenght of the checked data*  
 >-h : help  
