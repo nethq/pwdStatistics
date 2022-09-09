@@ -22,6 +22,6 @@ You can get a dictionary of all the english words. The script executes in 0.5 se
 Example :
 python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m entropy  
 python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dict -d dictionary1.txt dictionary2.txt  
-python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dr -d dictionary1.txt=~W~ dictionary2.txt=~W~  
+python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dr -d dictionary1.txt=str1 dictionary2.txt=str2  
             
 
