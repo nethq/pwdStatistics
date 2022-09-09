@@ -19,6 +19,8 @@ You can get a dictionary of all the english words. The script executes in 0.5 se
 >-d **dictionary-file1** **dictionary-file2** ... - would be used for dictionary mode  
 >-l <number** - would be used to limit the lenght of the checked data*  
 >-h : help  
+  
+    
 Example :
 python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m entropy  
 python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dict -d dictionary1.txt dictionary2.txt  
