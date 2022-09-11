@@ -127,30 +127,38 @@ def entropy_of_string(string):
     return entropy
 
 def write_to_file(file, data):
-    with open(file, "w") as f:
-        for line in data:
-            if "\n" in line:
-                f.write(line)
-            else:
-                f.write(line + "\n")
+    #check if data type is list
+    if type(data) == list:
+        with open(file, "w") as f:
+            for line in data:
+                if "\n" in line:
+                    f.write(line)
+                else:
+                    f.write(line + "\n")
+    elif type(data) == dict:
+        with open(file, "w") as f:
+            for key in data:
+                f.write(key + " : " + str(data[key]) + "\n")
+        
     print("Written : " + str(len(data)) + " lines to file : " + file)
 
-def dictionary_mode(data,dict_paths,limit):
-    """Checks the data for dictionary words"""
-    print("Running dictionary check")
-    data_dict = []
-    table = {}
+def dictionary_mode(data, dict_paths , limit):
+    word_table = {}
+    return_table = {}
     for key in dict_paths:
-        table.update(dictionary_to_table(key,dict_paths[key]))
+        word_table.update(dictionary_to_table(key,dict_paths[key]))
     for word in data:
+        return_buffer = []
         for i in range(len(word)):
-            for j in range(i+1+limit,len(word)+1):
+            for j in range(i+limit,len(word)+1):
                 tempword = str(word[i:j]).lower().strip()
-                if tempword in table:
-                    data_dict.append(word+":[{}][{}]\n".format(table[tempword],tempword))
+                
+                if word_table.get(tempword) != None:
+                    return_buffer.append(tempword)
                     break
-    
-    return data_dict
+        if len(return_buffer) > 0:
+            return_table[word] = return_buffer
+    return return_table
 
 def unique_int_relation_table(dict_paths):
     """Generates a unique integer identifier for each dictionary . Used for the unqsum mode"""
@@ -178,7 +186,7 @@ def unique_sum_mode(data,dict_paths,limit):
                     tempsum += dict_paths[table[tempword]]
         data_dict.append(str(tempsum) + " : " + word)
     return data_dict
-
+    
 def dictionary_replace_mode(data,dict_paths,limit):
     """Checks the data for dictionary words and replaces them with a specified string"""
     print("Running dictionary replace check")
