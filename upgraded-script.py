@@ -1,9 +1,7 @@
 """Script is used to analyse the complexity , strength and entropy of passwords in a file."""
 from enum import unique
-import operator
 import sys
 import math
-from tempfile import _TemporaryFileWrapper
 
 data_format = ":*\n"
 input_file = ""
@@ -133,7 +131,6 @@ def write_to_file(file, data):
     if type(data) == list:
         with open(file, "w") as f:
             for line in data:
-                line = str(line)
                 if "\n" in line:
                     f.write(line)
                 else:
@@ -141,7 +138,7 @@ def write_to_file(file, data):
     elif type(data) == dict:
         with open(file, "w") as f:
             for key in data:
-                f.write(str(key) + " : " + str(data[key]) + "\n")
+                f.write(key + " : " + str(data[key]) + "\n")
         
     print("Written : " + str(len(data)) + " lines to file : " + file)
 
@@ -153,10 +150,12 @@ def dictionary_mode(data, dict_paths , limit):
     for word in data:
         return_buffer = []
         for i in range(len(word)):
-            for j in range(i,len(word)):
+            for j in range(i+limit,len(word)+1):
                 tempword = str(word[i:j]).lower().strip()
-                if word_table.get(tempword) != None and len(tempword) >= limit:
+                
+                if word_table.get(tempword) != None:
                     return_buffer.append(tempword)
+                    break
         if len(return_buffer) > 0:
             return_table[word] = return_buffer
     return return_table
@@ -208,14 +207,16 @@ def dictionary_replace_mode(data,dict_paths,limit):
 def entropy_mode(data):
     """Calculates the entropy of the data"""
     print("Running entropy check")
-    data_entropy = {"":[]}
+    data_entropy = []
     for word in data:
-        data_entropy[word] = entropy_of_string(word)
-    return sort_struct_dict(data_entropy)
+        data_entropy.append(str(entropy_of_string(word) + ":" + word))
+    return sort_by_entropy(data_entropy)
 
-def sort_struct_dict(data):
-    """Sorts a dictionary by the values of the dictionary"""
-    return sorted(data.items(), key=operator.itemgetter(1))
+def sort_entropy(data):
+    """Sorts the data by entropy"""
+    print("Sorting data")
+    data.sort(key=lambda x: float(x.split(":")[0]))
+    return data
 
 def main():
     input_file, output_file, data_format, mode = args()
