@@ -1,4 +1,5 @@
 """Script is used to analyse the complexity , strength and entropy of passwords in a file."""
+from enum import unique
 import sys
 import math
 
@@ -51,11 +52,12 @@ def args():
             print("-m entropy : calculates and writes the entropy of the data conforming to the filter")
             print("-m dict : checks the data for dictionary words")
             print("-m dr : checks the data for dictionary words and replaces them with a specified string")
+            print("-m usum : generates a unique sum for each line, corelating to the enumerated dictionaries")
             print("-f :*n -> would get all the data between : and n")
             print("-d <dictionary-file1> <dictionary-file2> ... - would be used for dictionary mode")
             print("-l <number> - would be used to limit the lenght of the checked data")
             print("-h : help")
-            print("\n\n\n")
+
             print("Example :")
             print("python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m entropy")
             print("python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dict -d dictionary1.txt dictionary2.txt")
@@ -111,7 +113,8 @@ def data_from_file(file, data_format):
     else:
         data_prefix = data_format.split("*")[0]
         data_suffix = data_format.split("*")[1]
-    with open(file) as f:
+    #open file with utf-8
+    with open(file, encoding="utf-8", errors="ignore") as f:
         for line in f:
             if data_prefix in line:
                 data.append(line.split(data_prefix)[1].split(data_suffix)[0].strip())
@@ -126,7 +129,10 @@ def entropy_of_string(string):
 def write_to_file(file, data):
     with open(file, "w") as f:
         for line in data:
-            f.write(line + "")
+            if "\n" in line:
+                f.write(line)
+            else:
+                f.write(line + "\n")
     print("Written : " + str(len(data)) + " lines to file : " + file)
 
 def dictionary_mode(data,dict_paths,limit):
@@ -144,6 +150,33 @@ def dictionary_mode(data,dict_paths,limit):
                     data_dict.append(word+":[{}][{}]\n".format(table[tempword],tempword))
                     break
     
+    return data_dict
+
+def unique_int_relation_table(dict_paths):
+    """Generates a unique integer identifier for each dictionary . Used for the unqsum mode"""
+    table = {}
+    i = 0
+    for key in dict_paths:
+        table[key] = pow(2,i)
+        i += 1
+    return table
+
+def unique_sum_mode(data,dict_paths,limit):
+    """Generates a unique sum for each line, corelating to the enumerated dictionaries"""
+    print("Running unique sum check")
+    data_dict = []
+    dict_paths = unique_int_relation_table(dict_paths)
+    table  = {}
+    for dict in dict_paths:
+        table.update(dictionary_to_table(dict,dict))
+    for word in data:
+        tempsum = 0
+        for i in range(len(word)):
+            for j in range(i+1+limit,len(word)+1):
+                tempword = str(word[i:j]).lower().strip()
+                if tempword in table:
+                    tempsum += dict_paths[table[tempword]]
+        data_dict.append(str(tempsum) + " : " + word)
     return data_dict
 
 def dictionary_replace_mode(data,dict_paths,limit):
@@ -190,14 +223,11 @@ def main():
         data = dictionary_replace_mode(data,dict_paths,limit)
     elif mode == "entropy":
         data = entropy_mode(data)
+    elif mode == "usum":
+        data = unique_sum_mode(data,dict_paths,limit)
     write_to_file(output_file, data)
 
-# table = {}
-# table.update(dictionary_to_table("words.txt","1"))
-# table.update(dictionary_to_table("m-f-names.txt","2"))
-# print("Checking {} -> {}".format("password",check_string("password",table)))
-# print("Checking {} -> {}".format("PassworD",check_string("pass",table)))
-# print("Replacement of {} : {}".format("password",get_replacement_string("password",table)))
-# print("Replacement of {} : {}".format("John",get_replacement_string("jOhn",table)))
-
 main()
+# dict_paths = {}
+# dict_paths = {"test.txt":"","test2.txt":"","test3.txt":"","test4.txt":"","test5.txt":""}
+# print(unique_int_relation_table(dict_paths))
