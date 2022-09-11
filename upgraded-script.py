@@ -148,16 +148,7 @@ def dictionary_mode(data, dict_paths , limit):
     for key in dict_paths:
         word_table.update(dictionary_to_table(key,dict_paths[key]))
     for word in data:
-        return_buffer = []
-        for i in range(len(word)):
-            for j in range(i+limit,len(word)+1):
-                tempword = str(word[i:j]).lower().strip()
-                
-                if word_table.get(tempword) != None:
-                    return_buffer.append(tempword)
-                    break
-        if len(return_buffer) > 0:
-            return_table[word] = return_buffer
+        return_table[word] = substring_match(word,word_table,limit)
     return return_table
 
 def unique_int_relation_table(dict_paths):
@@ -186,7 +177,26 @@ def unique_sum_mode(data,dict_paths,limit):
                     tempsum += dict_paths[table[tempword]]
         data_dict.append(str(tempsum) + " : " + word)
     return data_dict
-    
+
+def substring_match(word, table,wordLenghtFilter, inverse = False):
+    """Searches all sequential substring of the given word and returns all matches in the table. If inverse=true , starts from the end of the word, elsewise it starts from the beginning."""
+    returnVar = []
+    if inverse:
+        for i in range(len(word)+1):
+            for j in range(i+1,len(word)+1):
+                tempword = str(word[i:len(word)-j]).lower().strip()
+                if tempword in table and len(tempword) >= wordLenghtFilter:
+                    returnVar.append(tempword)
+    else:
+        for i in range(len(word)):
+            for j in range(i+1,len(word)+1):
+                tempword = str(word[i:j]).lower().strip()
+                if tempword in table and len(tempword) >= wordLenghtFilter:
+                    returnVar.append(tempword)
+    if len(returnVar) == 0:
+        return None
+    return sorted(returnVar, key=len, reverse=True)
+
 def dictionary_replace_mode(data,dict_paths,limit):
     """Checks the data for dictionary words and replaces them with a specified string"""
     print("Running dictionary replace check")
@@ -236,6 +246,5 @@ def main():
     write_to_file(output_file, data)
 
 main()
-# dict_paths = {}
-# dict_paths = {"test.txt":"","test2.txt":"","test3.txt":"","test4.txt":"","test5.txt":""}
-# print(unique_int_relation_table(dict_paths))
+
+#print(substring_match("asdhzxcv",dictionary_to_table("dictionary-folder/words.txt",""),5))
