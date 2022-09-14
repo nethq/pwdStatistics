@@ -149,6 +149,11 @@ def import_data(file, data_format):
     if not "*" in data_format:
         print("Invalid data format")
         sys.exit(1)
+    elif data_format == "*":
+        with open(file) as f:
+            for line in f:
+                data.append(line.strip())
+        return data
     else:
         data_prefix = data_format.split("*")[0]
         data_suffix = data_format.split("*")[1]
@@ -275,13 +280,3 @@ def main():
     write_to_file(output_file, data)
 
 main()
-# word_dict = dictionary_to_table("dictionary-folder/words.txt","1")
-# word_dict.update(dictionary_to_table("dictionary-folder/number.txt","2"))
-# word_dict.update(dictionary_to_table("dictionary-folder/m-f-names.txt","4"))
-# word_dict.update(dictionary_to_table("dictionary-folder/n-sequence.txt","8"))
-# 
-# x = "12346INTHECORNER"
-# y = []
-# y = best_matches_in_table(x,word_dict,0)
-# print(y)
-# singular_usum(x,unique_int_relation_table(dict_paths),word_dict,1)
