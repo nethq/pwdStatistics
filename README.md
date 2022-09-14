@@ -25,8 +25,8 @@ All in all the the upgraded script is the one i'd recommend if you are using a s
   
     
 Example :
-python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m entropy  
+python3 upgraded-script.py -i passwords -o output.txt -f :*n -m entropy  
 python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dict -d dictionary1.txt dictionary2.txt  
 python3 upgraded-script.py -i passwords.txt -o output.txt -f :*n -m dr -d dictionary1.txt=str1 dictionary2.txt=str2  
-            
+python3 upgraded-script.py -i examples/email-and-pw-testset.txt -o output1.txt -f ":*\n" -m usum -d dictionary-folder/number.txt dictionary-folder/symbols.txt dictionary-folder/n-sequence.txt dictionary-folder/m-f-names.txt dictionary-folder/words.txt
 
